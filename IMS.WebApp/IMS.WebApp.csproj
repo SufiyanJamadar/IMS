@@ -12,8 +12,4 @@
     <ProjectReference Include="..\IMS.UseCases\IMS.UseCases.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components\Pages\Inventories\" />
-  </ItemGroup>
-
 </Project>

@@ -1,4 +1,5 @@
-﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+﻿@using IMS.UseCases.Inventories.Interfaces
+@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 
 
 <table class="table">
@@ -16,7 +17,7 @@
         {
             foreach (var inv in inventories)
             {
-               <InventoryListItemComponent Inventory="inv"></InventoryListItemComponent>
+                <InventoryListItemComponent Inventory="inv"></InventoryListItemComponent>
             }
 
         }
@@ -26,12 +27,20 @@
 @code {
     private List<Inventory>? inventories;
 
-    protected override async Task OnInitializedAsync()
+    [Parameter]
+    public string?  SearchInventoryFilter { get; set; }
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(SearchInventoryFilter??string.Empty)).ToList();
+    // }
+
+    protected override async Task OnParametersSetAsync()
     {
-        inventories = (await ViewInventoriesByNameUseCase.ExceuteAsync()).ToList();
+        inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(SearchInventoryFilter ?? string.Empty)).ToList();
     }
-}
 
-@code {
 
 }
+
+

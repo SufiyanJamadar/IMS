@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace IMS.UseCases.Inventories
 {
-    public class ViewInventoriesByNameUseCase : IViewInventoriesByNameUseCase
+    public class ViewInventoryByIdUseCase : IViewInventoryByIdUseCase
     {
         private readonly IInventoryRepository inventoryRepository;
 
-        public ViewInventoriesByNameUseCase(IInventoryRepository inventoryRepository)
+        public ViewInventoryByIdUseCase(IInventoryRepository inventoryRepository)
         {
             this.inventoryRepository = inventoryRepository;
         }
 
-        public async Task<IEnumerable<Inventory>> ExecuteAsync(string name = " ")
+        public async Task<Inventory> ExecuteAsync(int inventoryId)
         {
-            return await inventoryRepository.GetInventoriesByNameAsync(name);
+            return await this.inventoryRepository.GetInventoryByIdAsync(inventoryId);
         }
     }
 }

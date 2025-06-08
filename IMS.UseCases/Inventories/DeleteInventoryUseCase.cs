@@ -1,5 +1,4 @@
-﻿using IMS.CoreBusiness;
-using IMS.UseCases.Inventories.Interfaces;
+﻿using IMS.UseCases.Inventories.Interfaces;
 using IMS.UseCases.PluginInterfaces;
 using System;
 using System.Collections.Generic;
@@ -9,21 +8,17 @@ using System.Threading.Tasks;
 
 namespace IMS.UseCases.Inventories
 {
-    public class AddInventoryUseCase : IAddInventoryUseCase
+    public class DeleteInventoryUseCase : IDeleteInventoryUseCase
     {
         private readonly IInventoryRepository inventoryRepository;
 
-        public AddInventoryUseCase(IInventoryRepository inventoryRepository)
+        public DeleteInventoryUseCase(IInventoryRepository inventoryRepository)
         {
             this.inventoryRepository = inventoryRepository;
         }
-
-        public async Task ExecuteAsync(Inventory inventory)
+        public async Task ExecuteAsync(int inventoryId)
         {
-            await this.inventoryRepository.AddInventoryAsync(inventory);
+            await this.inventoryRepository.DeleteInventoryByIdAsync(inventoryId);
         }
-
-
-
     }
 }

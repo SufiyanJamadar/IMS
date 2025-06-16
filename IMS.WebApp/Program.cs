@@ -31,6 +31,7 @@ namespace IMS.WebApp
 
             builder.Services.AddTransient<IViewProductsByNameUseCase, ViewProductsByNameUseCase>();
             builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
+            builder.Services.AddTransient<IAddProductUseCase, AddProductUseCase>();
 
             var app = builder.Build();
 

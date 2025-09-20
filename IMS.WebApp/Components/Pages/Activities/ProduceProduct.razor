@@ -4,6 +4,8 @@
 
 @using static IMS.WebApp.Components.Controls.Common.AutoCompleteComponent
 
+@inject IJSRuntime JSRuntime
+
 @inject IViewProductByIdUseCase viewProductByIdUseCase
 @inject IViewProductsByNameUseCase viewProductsByNameUseCase
 @inject IProduceProductUseCase produceProductUseCase
@@ -11,7 +13,7 @@
 <h3>Produce Product</h3>
 <br />
 
-<EditForm Model="produceViewModel" OnValidSubmit="Produce">
+<EditForm id="produce-form" Model="produceViewModel" OnValidSubmit="Produce">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
 
@@ -26,9 +28,7 @@
             <div class="form-group">
                 <AutoCompleteComponent Label="Product to Produce"
                 SearchFunction="SearchProduct"
-                OnItemSelected="HandleItemSelected"></AutoCompleteComponent>
-
-               
+                OnItemSelected="OnItemSelected"></AutoCompleteComponent>
             </div>
         </div>
     </div>
@@ -50,7 +50,18 @@
 
 @code {
     private ProduceViewModel produceViewModel = new ProduceViewModel();
-    private Product? selectedProduct; 
+    private Product? selectedProduct;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("preventFormSubmission", "produce-form");
+        }
+    }
+
 
 
     private List<ItemViewModel>? SearchProduct(string name)
@@ -64,11 +75,12 @@
 
 
 
-    private async Task HandleItemSelected(ItemViewModel item)
+    private async Task OnItemSelected(ItemViewModel item)
     {
-        selectedProduct = await viewProductByIdUseCase.ExecuteAsync(item.Id);
+        this.selectedProduct = await viewProductByIdUseCase.ExecuteAsync(item.Id);
 
-        this.produceViewModel.ProductId = item.Id;
+        produceViewModel.ProductId = item.Id;
+        produceViewModel.Product = this.selectedProduct;
     }
 
     private async Task Produce()

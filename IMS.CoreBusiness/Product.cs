@@ -1,5 +1,6 @@
 ﻿using IMS.CoreBusiness.Validations;
 using System.ComponentModel.DataAnnotations;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IMS.CoreBusiness
 {
@@ -46,3 +47,5 @@ namespace IMS.CoreBusiness
 
     }
 }
+
+

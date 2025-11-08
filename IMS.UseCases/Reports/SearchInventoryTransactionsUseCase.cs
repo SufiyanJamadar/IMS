@@ -27,9 +27,7 @@ namespace IMS.UseCases.Reports
         {
 
             if (dateTo.HasValue) dateTo=dateTo.Value.AddDays(1);
-            {
-
-            }
+            
 
 
             return await this.inventoryTransactionRepository.GetInventoryTransactionsAsync(

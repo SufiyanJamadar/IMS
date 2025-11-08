@@ -24,7 +24,7 @@ namespace IMS.Plugins.InMemory
 
             /* select *
              *   from inventoryTransactions it
-             *   join  inventory inv on it.InventoryId=inv.InventoryId
+             *   join  inventories inv on it.InventoryId=inv.InventoryId
              */
 
             var query = from it in this._inventoryTransactions

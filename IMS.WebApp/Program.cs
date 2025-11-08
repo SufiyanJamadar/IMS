@@ -1,3 +1,4 @@
+using IMS.Plugins.EfCoreSqlServer;
 using IMS.Plugins.InMemory;
 using IMS.UseCases.Activities;
 using IMS.UseCases.Activities.Interfaces;
@@ -9,6 +10,7 @@ using IMS.UseCases.Products.Interfaces;
 using IMS.UseCases.Reports;
 using IMS.UseCases.Reports.Interfaces;
 using IMS.WebApp.Components;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace IMS.WebApp
@@ -20,6 +22,12 @@ namespace IMS.WebApp
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContextFactory<IMSContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("InventoryMangement"));
+            });
+
+
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
@@ -48,6 +56,7 @@ namespace IMS.WebApp
             builder.Services.AddTransient<ISellProductUseCase, SellProductUseCase>();
 
             builder.Services.AddTransient<ISearchInventoryTransactionsUseCase,SearchInventoryTransactionsUseCase>();
+            builder.Services.AddTransient<ISearchProductTransactionsUseCase, SearchProductTransactionsUseCase>();
 
 
             var app = builder.Build();

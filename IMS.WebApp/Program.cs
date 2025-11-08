@@ -31,13 +31,22 @@ namespace IMS.WebApp
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
-            builder.Services.AddSingleton<IProductRepository, ProductRepository>();
-            builder.Services.AddSingleton<IInventoryTransactionRepository, InventoryTransactionRepository>();
-            builder.Services.AddSingleton<IProductTransactionRepository, ProductTransactionRepository>();
+            if (builder.Environment.IsEnvironment("Testing"))
+            {
+                builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
+                builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+                builder.Services.AddSingleton<IInventoryTransactionRepository, InventoryTransactionRepository>();
+                builder.Services.AddSingleton<IProductTransactionRepository, ProductTransactionRepository>();
+            }
+            else
+            {
+                builder.Services.AddTransient<IInventoryRepository, InventoryEFCoreRepository>();
+                builder.Services.AddTransient<IProductRepository, ProductEFCoreRepository>();
+                builder.Services.AddTransient<IInventoryTransactionRepository, InventoryTransactionEfCoreRepository>();
+                builder.Services.AddTransient<IProductTransactionRepository, ProductTransactionEfCoreRepository>();
+            }
 
-
-            builder.Services.AddTransient<IViewInventoriesByNameUseCase,ViewInventoriesByNameUseCase>();
+                builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
             builder.Services.AddTransient<IAddInventoryUseCase, AddInventoryUseCase>();
             builder.Services.AddTransient<IEditInventoryUseCase, EditInventoryUseCase>();
             builder.Services.AddTransient<IViewInventoryByIdUseCase, ViewInventoryByIdUseCase>();

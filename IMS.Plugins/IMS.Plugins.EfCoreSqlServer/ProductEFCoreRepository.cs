@@ -38,7 +38,9 @@ namespace IMS.Plugins.EfCoreSqlServer
         public async Task<Product?> GetProductByIdAsync(int productId)
         {
             using var db = contextFactory.CreateDbContext();
-            var product = await db.Products.FindAsync(productId);
+            var product = await db.Products.Include(x=>x.ProductInventories)!
+                                          .ThenInclude(pi=>pi.Inventory)
+                                         .FirstOrDefaultAsync(p => p.ProductId == productId);
 
             return product;
         }
@@ -53,7 +55,8 @@ namespace IMS.Plugins.EfCoreSqlServer
         {
             using var db = this.contextFactory.CreateDbContext();
 
-            var prod = await db.Products.FindAsync(product.ProductId);
+            var prod = await db.Products.Include(x=>x.ProductInventories)!
+                                        .FirstOrDefaultAsync(p=> p.ProductId == product.ProductId);
 
             if (prod is not null)
             {
